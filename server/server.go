@@ -38,10 +38,10 @@ func NewServer() *Server {
 
 	if env.EqualEnv("PINK_ENV", "production") {
 		gin.SetMode(gin.ReleaseMode)
-		server.engine = gin.Default()
+		server.engine = gin.New()
 	} else {
 		gin.SetMode(gin.DebugMode)
-		server.engine = gin.New()
+		server.engine = gin.Default()
 	}
 
 	if env.HasEnv("PINK_HOST") {
