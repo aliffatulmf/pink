@@ -1,0 +1,45 @@
+openapi: 3.1.0
+info:
+  title: Pink Server
+  version: 1.0.0
+paths:
+  /api/check:
+    get:
+      tags:
+        - check
+      description: Check domain is blocked or not
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  domain:
+                    type: string
+                  status:
+                    type: string
+  /api/list:
+    get:
+      tags:
+        - list
+      description: Get cached domains
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  domain:
+                    type: array
+                    items:
+                      type: string

@@ -15,15 +15,3 @@ Pink terinspirasi oleh [Indiwtf](https://indiwtf.upset.dev/) yang dibuat oleh [U
 ## Endpoint API
 
 File `router.go` mendefinisikan endpoint API berikut:
-
-### `/api/v1/check`
-
-- **Method:** GET
-- **Fungsi Handler:** `VerifyDomain`
-- **Deskripsi:** Endpoint ini memeriksa apakah domain valid atau tidak. Detail apa yang diperiksa ditentukan dalam fungsi `VerifyDomain`.
-
-### `/api/v1/list`
-
-- **Method:** GET
-- **Fungsi Handler:** `ListDomains`
-- **Deskripsi:** Endpoint ini mengembalikan daftar domain. Detail apa yang dikembalikan ditentukan dalam fungsi `ListDomains`.
