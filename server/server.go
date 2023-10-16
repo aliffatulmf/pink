@@ -1,60 +1,52 @@
-package server
+package main
 
 import (
 	"fmt"
 	"log"
-	"os"
-	"strconv"
 
-	"github.com/aliffatulmf/pink/env"
+	"github.com/aliffatulmf/pink/cmd"
+	"github.com/aliffatulmf/pink/handlers"
 	"github.com/gin-gonic/gin"
 )
 
-type Server struct {
-	engine *gin.Engine
-	Host   string
-	Port   int
+const PinkLogo = `
+  _____________       ______  
+  ___  __ \__(_)_________  /__
+  __  /_/ /_  /__  __ \_  //_/
+  _  ____/_  / _  / / /  ,<   
+  /_/     /_/  /_/ /_//_/|_|
+`
+
+func setupRouter(router *gin.Engine) *gin.Engine {
+	router.GET("/api/check", handlers.VerifyDomain)
+	router.GET("/api/list", handlers.ListDomains)
+	return router
 }
 
-func (s *Server) Addr() string {
-	return fmt.Sprintf("%s:%d", s.Host, s.Port)
-}
-
-func (s *Server) Run() {
-	if err := s.engine.Run(s.Addr()); err != nil {
-		log.Fatal("Server failed to start: ", err)
-	}
-}
-
-func (s *Server) Engine() gin.IRouter {
-	return s.engine
-}
-
-func NewServer() *Server {
-	server := &Server{
-		Host: "localhost",
-		Port: 8080,
-	}
-
-	if env.EqualEnv("PINK_ENV", "production") {
+func setupGinEngine(mode string) *gin.Engine {
+	switch mode {
+	case cmd.ProductionMode:
 		gin.SetMode(gin.ReleaseMode)
-		server.engine = gin.New()
-	} else {
-		gin.SetMode(gin.DebugMode)
-		server.engine = gin.Default()
-	}
+		engine := gin.New()
+		engine.Use(gin.Recovery())
 
-	if env.HasEnv("PINK_HOST") {
-		server.Host = os.Getenv("PINK_HOST")
+		fmt.Printf("%s\n", PinkLogo)
+		fmt.Printf("Running in %s mode", mode)
+		return engine
+	case cmd.DevelopmentMode:
+		return gin.Default()
+	default:
+		log.Fatal("Invalid environment mode")
+		return nil
 	}
+}
 
-	if env.HasEnv("PINK_PORT") {
-		port, err := strconv.Atoi(os.Getenv("PINK_PORT"))
-		if err != nil {
-			log.Fatal("PINK_PORT must be a number")
-		}
-		server.Port = port
+func main() {
+	args := cmd.ParseServerFlag()
+	engine := setupGinEngine(args.Environment)
+	router := setupRouter(engine)
+
+	if err := router.Run(args.Addr()); err != nil {
+		log.Fatal(err)
 	}
-
-	return server
 }
