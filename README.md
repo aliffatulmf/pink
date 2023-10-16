@@ -6,11 +6,11 @@ Pink adalah layanan backend yang dirancang untuk memeriksa apakah sebuah situs w
 
 Pink terinspirasi oleh [Indiwtf](https://indiwtf.upset.dev/) yang dibuat oleh [Upset](https://upset.dev/). Indiwtf adalah layanan yang memeriksa apakah sebuah situs web dilarang oleh pemerintah Indonesia.
 
-## Environment variables
+## Arguments
 
-- `PINK_HOST`: Host untuk server.
-- `PINK_PORT`: Port untuk server.
-- `PINK_ENV`: Lingkungan untuk server. Ini bisa "development" atau "production".
+- `-host`: Host untuk server.
+- `-port`: Port untuk server.
+- `-env`: Lingkungan untuk server. Ini bisa "development" atau "production".
 
 ## Endpoint API
 
